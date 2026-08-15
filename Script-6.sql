@@ -1,0 +1,79 @@
+CREATE DATABASE TenDatabase;
+GO
+
+USE TenDatabase;
+GO
+
+CREATE TABLE TenBang (
+    Ma INT IDENTITY(1,1) PRIMARY KEY,
+    Ten VARCHAR(50) NOT NULL,
+    Ngay DATE,
+    SoLuong INT,
+    Luong DECIMAL(10,2),
+    Email VARCHAR(100) UNIQUE,
+    CHECK (SoLuong >= 0),
+    NgayTao DATE DEFAULT CAST(GETDATE() AS DATE)
+);
+
+CREATE TABLE SinhVien (
+    MaSV CHAR(10) PRIMARY KEY,
+    HoTen VARCHAR(50)
+);
+
+CREATE TABLE Lop (
+    MaLop CHAR(10) PRIMARY KEY,
+    TenLop VARCHAR(50)
+);
+
+CREATE TABLE SinhVien (
+    MaSV CHAR(10) PRIMARY KEY,
+    HoTen VARCHAR(50),
+    MaLop CHAR(10),
+    FOREIGN KEY (MaLop) REFERENCES Lop(MaLop)
+);
+
+CREATE TABLE DangKy (
+    MaSV CHAR(10),
+    MaMH CHAR(10),
+    NgayDangKy DATE,
+    PRIMARY KEY (MaSV, MaMH),
+    FOREIGN KEY (MaSV) REFERENCES SinhVien(MaSV),
+    FOREIGN KEY (MaMH) REFERENCES MonHoc(MaMH)
+);
+
+CREATE TABLE Users (
+    UserID INT PRIMARY KEY,
+    Username VARCHAR(30) UNIQUE,
+    Email VARCHAR(50) UNIQUE
+);
+
+CREATE TABLE TaiKhoan (
+    ID INT PRIMARY KEY,
+    NgayTao DATE DEFAULT CAST(GETDATE() AS DATE)
+);
+
+CREATE TABLE NhanVien (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    HoTen NVARCHAR(50),
+    ChucVu NVARCHAR(30)
+);
+
+INSERT INTO TenBang (Ten, Ngay, SoLuong)
+VALUES ('Nguyen Van A', '2005-01-01', 10);
+
+SELECT *
+FROM TenBang;
+
+SELECT Ma, Ten, SoLuong
+FROM TenBang;
+
+SELECT *
+FROM TenBang
+WHERE SoLuong >= 10;
+
+UPDATE TenBang
+SET SoLuong = 20
+WHERE Ma = 1;
+
+DELETE FROM TenBang
+WHERE Ma = 1;
